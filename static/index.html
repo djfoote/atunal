@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>A2NAL</title>
+		<!--
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+		</script>
+		-->
+
+		<script type="text/javascript">
+			/*
+			Included .js in .html
+			*/
+			var MusicString = window.localStorage.getItem("musicinput");
+			var Bars = window.localStorage.getItem("barsinput");
+			var Error = window.localStorage.getItem("anyerrors");
+
+			/*
+			if (!MusicString) {
+				console.log("MusicString = " + MusicString);
+			}
+			*/
+
+			function Initial(){
+				MusicString = 0;
+				Bars = 0;
+				Error = 0;
+				console.log("MusicString = " + MusicString);
+				console.log("Bars = "+ Bars);
+				console.log("Error = "+ Error);
+			}
+
+			function Two(x){
+				if (x < 10) {
+					return "0"+x;
+				}
+				return x;
+			}
+
+			function ChangeBars() {
+			    Bars = parseInt(document.getElementById("Bars").value);
+				console.log("Bars = "+ Bars);
+				if (!(Bars >= 0 || Bars < 0)) {
+					alert("SOMETHING BROKE");
+				} else {
+					ProvideNotesInterface();
+				}
+			}
+
+			function ProvideNotesInterface() {
+
+				var header0 = '&nbsp;&nbsp;&nbsp;';
+			    var header1 = '<select id="';
+			    var header2 = '" size="1" value="0">\n';
+			    var body0 = '<option value="0">&nbsp&nbsp&nbspA</option>\n<option value="1">&nbsp&nbsp&nbspA#</option>\n<option value="2">&nbsp&nbsp&nbspB</option>\n<option value="3">&nbsp&nbsp&nbspC</option>\n';
+			    var body1 = '<option value="4">&nbsp&nbsp&nbspC#</option>\n<option value="5">&nbsp&nbsp&nbspD</option>\n<option value="6">&nbsp&nbsp&nbspD#</option>\n<option value="7">&nbsp&nbsp&nbspE</option>\n';
+				var body2 = '<option value="8">&nbsp&nbsp&nbspF</option>\n<option value="9">&nbsp&nbsp&nbspF#</option>\n<option value="a">&nbsp&nbsp&nbspG</option>\n<option value="b">&nbsp&nbsp&nbspG#</option>';
+				var body3 = '<option value="M">&nbsp&nbsp&nbspM</option>\n<option value="m">&nbsp&nbsp&nbspm</option>\n<option value="o">&nbsp&nbsp&nbspo</option>\n<option value="+">&nbsp&nbsp&nbsp+</option>\n';
+				var body4 = '<option value="x">&nbsp&nbsp&nbsp7</option>\n<option value="y">&nbsp&nbsp&nbspM7</option>\n<option value="z">&nbsp&nbsp&nbspm7</option>';
+			    var footer = '</select>&nbsp&nbsp&nbsp;'; //Add rests, change to hexadecimal, add chords, change to dropdown
+
+			    var completeNotes = '', completeModes = '', complete = '';
+
+				for (var i = 0; i < Bars; i++) {
+				    completeNotes += Two(i) + header0 +header1 + i + header2 + body0 + body1 + body2 + footer;
+				    completeModes += Two(i) + header0 +header1 + "mode" + i + header2 + body3 + body4 + footer;
+				    if ((i + 1) % 4 == 0 || i == Bars - 1) {
+				    	complete += completeNotes + "<br>" + completeModes + "<br> <br>"
+				    	completeNotes = '';
+				    	completeModes = '';
+				    }
+				}
+				complete += completeNotes + completeModes;
+			    document.getElementById('NotesInterface').innerHTML = complete;
+			    //Formatting
+			    //Limit number of dropdowns per row
+			}
+
+			function MelodyInput() {
+				MusicString = "";
+			    for (var i = 0; i < Bars; i++) {
+			    	//Uncaught typeerror on incorrect input
+			    	MusicString += document.getElementById(i).value + document.getElementById("mode"+i).value;
+			    }
+				console.log(MusicString);
+				document.getElementById("code").value = MusicString;
+			}
+
+			function MelodyOutput() {
+				console.log(MusicString);
+			}
+
+		</script>
+	</head>
+
+	<body onload="Initial()">
+
+		<div align = center>
+  				Number of bars: <input type="text" id="Bars" maxlength="2" size="2" step="1" value="0"> <!-- HX: Max 100 --> <!-- HX: Rules --> 
+			<input type="button" onclick="ChangeBars()" value="Change"/>
+			<br>
+			<br>
+			<div id="NotesInterface">
+			</div> 
+			<br>
+			<br>
+			<input type="button" onclick="MelodyInput()" value="Save melody"/>
+			<br>
+			<br>
+			<form action='/api/playmusic' method="POST">
+				Code: <!-- Change visibility if possible-->
+				<br>		
+                <input name="input" type="text" id="code" value="" readonly/> 
+				<br>
+				<input type="submit" value="Play melody!"/> 
+				<!-- HX: Disable until melody saved -->
+			</form>
+		</div>
+</html>
