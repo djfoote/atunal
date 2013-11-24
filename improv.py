@@ -2,6 +2,7 @@
 """
 
 from mingus.core import progressions, intervals, chords
+from mingus.core.scales import ionian, aeolian, locrian, whole_note, mixolydian
 from mingus.containers import NoteContainer, Note
 from mingus.midi import fluidsynth
 import time, sys
