@@ -9,7 +9,7 @@ import time, sys
 import random
 import math
 
-solo_sound_font = "LesPaulPeeWee.sf2"
+solo_sound_font = "soundfont.sf2"
 
 if not fluidsynth.init(solo_sound_font):
 	print "Couldn't load soundfont", solo_sound_font
