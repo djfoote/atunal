@@ -1,1 +1,1 @@
-web: gunicorn atunal:app
+web: gunicorn atunal.wsgi
