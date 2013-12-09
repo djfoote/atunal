@@ -31,6 +31,8 @@ from ctypes.util import find_library
 
 lib = find_library('fluidsynth') or find_library('libfluidsynth') or find_library('libfluidsynth-1')
 
+lib = '/app/.heroku/python/lib/python2.7/site-packages'
+# Absolute path for heroku cause life's tough
 
 if lib is None:
 	raise ImportError, "Couldn't find the FluidSynth library."
