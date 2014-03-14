@@ -17,7 +17,7 @@ if not fluidsynth.init(solo_sound_font):
 
 choose_scale = {'M' : ionian,
 				'm' : aeolian,
-				'o' : locrian,
+				'dim' : locrian,
 				'+' : whole_note,
 				'7' : mixolydian,
 				'm7': aeolian,
